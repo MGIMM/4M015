@@ -1,15 +1,100 @@
 ---
 title: "Liste de problèmes sur **R** et **Rmd**"
-author: "par DU Qiming"
-date: "17 novembre 2017"
+author: "DU Qiming<p></p> email : duqiming2004@gmail.com"
+date: "autome 2017"
+abstract: ""
 output:
   html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
     fig_caption: yes
 ---
 
 
-# I. Remarques sur les TP
+```{r cap_ref_functions, include=FALSE}
+############################## configuration ############################## 
+library(knitr)
+## Get the name of this Rmd file
+rmdFn <- knitr::current_input()  # filename of input document
+## Read lines and close connection
+rmdCon <- file(rmdFn, open = 'r')
+rmdLines <- readLines(rmdCon)
+close(rmdCon)
+## Pull out all occurences of at least one back tick, followed 
+## by any number of characters, followed by fig$cap (all on one line)
+figscap_idx <- grep("`+(.*)fig\\$cap", rmdLines)
+rmdLines <- rmdLines[figscap_idx]
+## Get rid of everything up until the start of the caption label
+## This presumes the caption label is the first argument of fig$cap()
+## E.g., fig.cap = fig$cap("my_label", ...)
+rmdLinesSansPre <- sub("(.*)fig\\$cap(.*?)[\"']", "", rmdLines)
+## Identify everything up until the first quote
+match_data <- regexpr("(.*?)[\"']", rmdLinesSansPre)
+## Reduce the length by one, because we're not interested in the final quote
+attr(match_data, "match.length") <- attr(match_data, "match.length") - 1
+## Extract
+fig_labels <- regmatches(rmdLinesSansPre, match_data, invert=FALSE)
+if (length(fig_labels) > 0) {
+    ## Test for duplicates
+    if (anyDuplicated(fig_labels) > 0) stop("Duplicate caption labels detected")
+}else{
+  fig_labels <- c('no_lables')
+}
 
+    ## Create a named list of Figure numbers
+    ref <- as.list(1:length(fig_labels))
+    names(ref) <- fig_labels
+
+## A function for generating captions and cross-references
+fig <- local({
+  i <- 0
+  list(
+    cap=function(refName="", text="", col="darkred") {
+      i <<- i + 1
+      ref[[refName]] <<- i
+      css_ctr <- "text-align:center; display:inline-block; width:100%;"
+      if(text!="") text <- paste0(": ", text)
+      cap_txt <- paste0("<span style=\"color:", col, "; ", css_ctr, "\">Figure ", i, text , "</span>")
+      return(paste0(refName,'&',cap_txt))
+
+    },
+    
+    ref=function(refName, checkRef=TRUE) {
+    if (checkRef && !refName %in% names(ref)) stop(paste0("fig$ref() error: ", refName, " not found"))
+        paste0("<A HREF=\"#fig", refName, "\">Figure ", ref[[refName]], "</A>")})})
+## Replace default hook for processing plots & add figure anchor
+knit_hooks$set(plot = function(x, options,
+                             fig_scale_factor = "80%") {
+  sty <- paste0(" style=\"text-align:center", ";\"")
+  info = strsplit(options$fig.cap,'&')[[1]]
+  refName = info[1]
+  cap_txt = info[2]
+  figanchor <- paste0("<a name=\"fig", refName, "\"></a>")
+  paste('<figure', sty, '>', figanchor, '<img src="',
+    opts_knit$get('base.url'), paste(x, collapse = '.'),
+    '" width = ',fig_scale_factor, '><figcaption>', cap_txt, '</figcaption></figure>','<p></p>',
+    sep = '')
+})
+
+############################## configuration ############################## 
+```
+
+Je donne une liste des problèmes posés par les étudiants pendant le TP (groupe B1 de 4M015 2017).
+Comme il s'agit beaucoup de détails pour faire des codes **jolis**, je trouve que
+c'est plus raisonable d'apprendre les détails petit à petit. Je sélectionne les problèmes qui
+sont (sans doute) intéressants pour qu'on peut avancer ensemble.  
+
+N'hésitez pas de m'envoyez un [email](mailto:duqiming2004@gmail.com) pour 
+poser des questions ou corriger mon français.
+
+
+**source:**
+
+ * [cette page](https://github.com/mgimm/4M015/) 
+ * [Un Rmd template](https://github.com/mgimm/Rmd-template/)  
+
+# Remarques sur les TP
 
 ## Importation des packages
 
@@ -36,7 +121,7 @@ if(!require(package))  install.packages('package')
 
 
 Si on ne veut utilise qu'une ou deux fonctions ou variables dans un package, 
-il faut eviter (si possible) l'utilisation de **library**. En revanch, on peut directement 
+il faut eviter (si possible) l'utilisation de **library**. En revanche, on peut directement 
 écrire
 
 ```{r echo=TRUE, eval=FALSE}
@@ -51,7 +136,7 @@ data.frame$nom_de_colone
 ```
 
 
-## _Indexing_ par []
+## Indexing par []
 
 Il y a 3 types de _index_ par [] dans **R** : _int, logical, char_
 
@@ -59,11 +144,11 @@ Il y a 3 types de _index_ par [] dans **R** : _int, logical, char_
 * _logical_ : les conditions
 * _char_ : les noms (par ex. les noms de colone dans un _dataframe_)
 
-## II. Programmation avec **R Notebook** et **Rmarkdown**
+# Programmation avec **R Notebook** et **Rmarkdown**
 
 [**R Notebook**](http://rmarkdown.rstudio.com/r_notebooks.html) est un éditeur de **.Rmd** dans **Rstudio**.
 
-### Stucture de **.Rmd**
+## Stucture de **.Rmd**
 
 * metadata(configuration)
 * texte
@@ -72,12 +157,12 @@ Il y a 3 types de _index_ par [] dans **R** : _int, logical, char_
 * bloc de codes
 ...
 
-### Les types de blocs
+### Une liste d'exemples des blocs
 
 #### calculs, importations des données, les autres manipulations sans sortie
 
 ```{r, comment = "", echo=FALSE}
-"{r include=FALSE}
+"{r nom1, include=FALSE}
 seq(1, 10)
 " -> my_code_string
 cat("```", my_code_string, "```", sep = "")
@@ -85,23 +170,35 @@ cat("```", my_code_string, "```", sep = "")
 
 #### les plots
 
-sans tempalte
+sans template
+
 ```{r, comment = "", echo=FALSE}
-"{r echo=FALSE}
+"{r nom2, echo=FALSE}
 plot(rnorm(1000))
 " -> my_code_string
 cat("```", my_code_string, "```", sep = "")
 ```
 
 avec tempalte
+
 ```{r, comment = "", echo=FALSE}
-"{r echo=FALSE, fig.cap=fig$cap('label','description')}
+"{r nom3, echo=FALSE, fig.cap=fig$cap('label','description')}
 plot(rnorm(1000))
 " -> my_code_string
 cat("```", my_code_string, "```", sep = "")
 ```
 
+dans les commentaires, on utilise
+
+```{r, comment = "", echo=FALSE}
+"r fig$cap('label')" -> my_code_string
+cat("`", my_code_string, "`", sep = "")
+```
+
+pour la référence. J'ai donné un exemple dans le [template](https://github.com/mgimm/Rmd-template).
+
 #### fonction avec **resultat(print)**
+
 ```{r, comment = "", echo=FALSE}
 "{r echo=FALSE}
 df <- read.table(...)
@@ -109,3 +206,47 @@ summary(data.frame(df))
 " -> my_code_string
 cat("```", my_code_string, "```", sep = "")
 ```
+
+### Pour aller plus loin
+
+Vous pouvez essayer de regarder [cet article](https://yihui.name/knitr/options/#text-results)
+écrit par l'auteur de Rmarkdown. C'est possible de cliquer directement sur le rouage pour changer les 
+paremètre des blocs.
+  
+# Remarque sur les plots
+
+## Rotations de _xlab_ 
+
+```{r, fig.cap=fig$cap('rotation_xlab','Rotations de _xlab_')}
+# méthode 1
+par(mfrow = c(1,2))
+boxplot(cars, las = 3)
+
+# méthode 2
+boxplot(cars, xaxt = "n",  xlab = "")
+axis(1, labels = FALSE)
+text(x =  seq_along(names(cars)), y = par("usr")[3] - 10, srt = 55, adj = 1,
+     labels = names(cars), xpd = TRUE)
+```
+
+On remarque que c'est beaucoup plus facil avec le package [ggplot2](http://ggplot2.org/).
+
+## legend() en dehors d'un plot
+
+```{r, fig.cap=fig$cap('legeng_outside',"legend en dehor d'un plot"), echo=TRUE}
+# on va faire un plot de 2 nuages des points de dim 2
+A <- data.frame(x=rnorm(100, 20, 2), y=rnorm(100, 20, 2))
+B <- data.frame(x=rnorm(100, 21, 1), y=rnorm(100, 21, 1))
+
+# ajuster la marge
+# le default est c(5,4,4,2) + 0.1
+# regarder ?par qu'est-ce qu'il représente
+par(mar=c(5.1, 4.1, 4.1, 7.1), xpd=TRUE)
+
+plot(y ~ x, A, ylim=range(c(A$y, B$y)), xlim=range(c(A$x, B$x)), pch=1, col='grey')
+points(y ~ x, B, pch=2, col='pink')
+
+legend("topright", inset=c(-0.15,0), legend=c("A","B"), pch=c(1,2), title="Group", col=c('grey','pink'))
+```
+
+
