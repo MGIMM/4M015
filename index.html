@@ -138,6 +138,8 @@ require(nom de package)</code></pre>
 <p>Si on ne veut utilise qu’une ou deux fonctions ou variables dans un package, il faut eviter (si possible) l’utilisation de <strong>library</strong>. En revanch, on peut directement écrire</p>
 <pre class="r"><code>package::fonction()
 package::variable</code></pre>
+<p>qui resemble beaucoup à</p>
+<pre class="r"><code>data.frame$nom_de_colone</code></pre>
 </div>
 <div id="indexing-par" class="section level2">
 <h2><em>Indexing</em> par []</h2>
@@ -151,6 +153,43 @@ package::variable</code></pre>
 <div id="ii.-programmation-avec-r-notebook-et-rmarkdown" class="section level2">
 <h2>II. Programmation avec <strong>R Notebook</strong> et <strong>Rmarkdown</strong></h2>
 <p><a href="http://rmarkdown.rstudio.com/r_notebooks.html"><strong>R Notebook</strong></a> est un éditeur de <strong>.Rmd</strong> dans <strong>Rstudio</strong>.</p>
+<div id="stucture-de-.rmd" class="section level3">
+<h3>Stucture de <strong>.Rmd</strong></h3>
+<ul>
+<li>metadata(configuration)</li>
+<li>texte</li>
+<li>bloc de codes</li>
+<li>texte</li>
+<li>bloc de codes …</li>
+</ul>
+</div>
+<div id="les-types-de-blocs" class="section level3">
+<h3>Les types de blocs</h3>
+<div id="calculs-importations-des-donnees-les-autres-manipulations-sans-sortie" class="section level4">
+<h4>calculs, importations des données, les autres manipulations sans sortie</h4>
+<pre><code>```{r include=FALSE}
+seq(1, 10)
+```</code></pre>
+</div>
+<div id="les-plots" class="section level4">
+<h4>les plots</h4>
+<p>sans tempalte</p>
+<pre><code>```{r echo=FALSE}
+plot(rnorm(1000))
+```</code></pre>
+<p>avec tempalte</p>
+<pre><code>```{r echo=FALSE, fig.cap=fig$cap('label','description')}
+plot(rnorm(1000))
+```</code></pre>
+</div>
+<div id="fonction-avec-resultatprint" class="section level4">
+<h4>fonction avec <strong>resultat(print)</strong></h4>
+<pre><code>```{r echo=FALSE}
+df &lt;- read.table(...)
+summary(data.frame(df))
+```</code></pre>
+</div>
+</div>
 </div>
 </div>
 
