@@ -1,0 +1,122 @@
+---
+title: "Liste de problèmes sur **R** et **Rmd**"
+author: "par DU Qiming"
+date: "17 novembre 2017"
+output:
+  html_document:
+    fig_caption: yes
+---
+
+```{r cap_ref_functions, include=FALSE}
+############################## configuration ############################## 
+library(knitr)
+## Get the name of this Rmd file
+rmdFn <- knitr::current_input()  # filename of input document
+## Read lines and close connection
+rmdCon <- file(rmdFn, open = 'r')
+rmdLines <- readLines(rmdCon)
+close(rmdCon)
+## Pull out all occurences of at least one back tick, followed 
+## by any number of characters, followed by fig$cap (all on one line)
+figscap_idx <- grep("`+(.*)fig\\$cap", rmdLines)
+rmdLines <- rmdLines[figscap_idx]
+## Get rid of everything up until the start of the caption label
+## This presumes the caption label is the first argument of fig$cap()
+## E.g., fig.cap = fig$cap("my_label", ...)
+rmdLinesSansPre <- sub("(.*)fig\\$cap(.*?)[\"']", "", rmdLines)
+## Identify everything up until the first quote
+match_data <- regexpr("(.*?)[\"']", rmdLinesSansPre)
+## Reduce the length by one, because we're not interested in the final quote
+attr(match_data, "match.length") <- attr(match_data, "match.length") - 1
+## Extract
+fig_labels <- regmatches(rmdLinesSansPre, match_data, invert=FALSE)
+if (length(fig_labels) > 0) {
+    ## Test for duplicates
+    if (anyDuplicated(fig_labels) > 0) stop("Duplicate caption labels detected")
+    ## Create a named list of Figure numbers
+    ref <- as.list(1:length(fig_labels))
+    names(ref) <- fig_labels
+}
+
+## A function for generating captions and cross-references
+fig <- local({
+  i <- 0
+  list(
+    cap=function(refName="unknown", text="", col="darkred") {
+      i <<- i + 1
+      ref[[refName]] <<- i
+      css_ctr <- "text-align:center; display:inline-block; width:100%;"
+      if(text!="") text <- paste0(": ", text)
+      cap_txt <- paste0("<span style=\"color:", col, "; ", css_ctr, "\">Figure ", i, text , "</span>")
+      return(paste0(refName,'&',cap_txt))
+
+    },
+    
+    ref=function(refName, checkRef=TRUE) {
+    if (checkRef && !refName %in% names(ref)) stop(paste0("fig$ref() error: ", refName, " not found"))
+        paste0("<A HREF=\"#fig", refName, "\">Figure ", ref[[refName]], "</A>")})})
+## Replace default hook for processing plots & add figure anchor
+knit_hooks$set(plot = function(x, options,
+                             fig_scale_factor = "80%") {
+  sty <- paste0(" style=\"text-align:center", ";\"")
+  info = strsplit(options$fig.cap,'&')[[1]]
+  refName = info[1]
+  cap_txt = info[2]
+  figanchor <- paste0("<a name=\"fig", refName, "\"></a>")
+  paste('<figure', sty, '>', figanchor, '<img src="',
+    opts_knit$get('base.url'), paste(x, collapse = '.'),
+    '" width = ',fig_scale_factor, '><figcaption>', cap_txt, '</figcaption></figure>','<p></p>',
+    sep = '')
+})
+
+############################## configuration ############################## 
+```
+
+# I. Remarques sur les TP
+
+
+## Importation des packages
+
+On a 2 méthodes pour importer les packages :
+
+```{r echo=TRUE, eval=FALSE}
+library(nom de package)
+require(nom de package)
+```
+
+La différence est que **require = try + library**. C'est-à-dire, **require** a une sortie de type _logical_.  
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, results=FALSE}
+print(require(pacakge_n_existe_pas))
+```
+
+Alors, on conclut qu'on utilise _toujours_ **library** pour importer un package qu'on sait qu'il existe.
+On n'utilise **require** que dans le cas :
+
+```{r echo=TRUE, eval=FALSE}
+if(!require(package))  install.packages('package')
+```
+
+
+Si on ne veut utilise qu'une ou deux fonctions ou variables dans un package, 
+il faut eviter (si possible) l'utilisation de **library**. En revanch, on peut directement 
+écrire
+
+```{r echo=TRUE, eval=FALSE}
+package::fonction()
+package::variable
+```
+
+
+## _Indexing_ par []
+
+Il y a 3 types de _index_ par [] dans **R** : _int, logical, char_
+
+* _int_ : les positions
+* _logical_ : les conditions
+* _char_ : les noms (par ex. les noms de colone dans un _dataframe_)
+
+## II. Programmation avec **R Notebook** et **Rmarkdown**
+
+[**R Notebook**](http://rmarkdown.rstudio.com/r_notebooks.html) est un éditeur de **.Rmd** dans **Rstudio**.
