@@ -150,7 +150,7 @@ En fait, dans la vraie vie, c'est très rare qu'on manipule directement les donn
 n'est pas assez éfficace si on a plein de données à traiter. Je vous donne une introduction de package
 [dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html), qui est assez
 facil à comprendre. Pour allez plus loin, 
-c'est mieux de lire un peu la documentation.
+c'est mieux de lire un peu la documentation officielle.
 
 # Programmation avec **R Notebook** et **Rmarkdown**
 
@@ -256,5 +256,6 @@ points(y ~ x, B, pch=2, col='pink')
 
 legend("topright", inset=c(-0.15,0), legend=c("A","B"), pch=c(1,2), title="Group", col=c('grey','pink'))
 ```
+
 
 
