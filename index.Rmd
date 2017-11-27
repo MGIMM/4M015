@@ -221,7 +221,7 @@ Vous pouvez essayer de regarder [cet article](https://yihui.name/knitr/options/#
 écrit par l'auteur de Rmarkdown. C'est possible de cliquer directement sur le rouage pour changer les 
 paremètre des blocs.
   
-# Remarque sur les plots
+# Remarques sur les plots
 
 ## Rotations de ```xlab``` 
 
@@ -256,6 +256,42 @@ points(y ~ x, B, pch=2, col='pink')
 
 legend("topright", inset=c(-0.15,0), legend=c("A","B"), pch=c(1,2), title="Group", col=c('grey','pink'))
 ```
+
+# Remarques sur les Devoirs à rendre
+
+## Devoir 1
+
+Le devoir 1 est principalement un exo sur la rédaction
+et l'utilisation de Rmarkdown. 
+
+### Camenbert (pie chart) ou non ?
+
+Je ne sais pas si c'est très bizzare pour vous de ne
+voir pas du tout de camenbert pendant ce cours. Il me
+semble que c'est une histoire classique de parler
+camenbert quand on fait la stat. En revanche, dans la
+"vraie" stats, il y a très peu de cas ou un camenbert
+est util. [Pourquoi
+?](https://medium.com/@KristinHenry/in-defense-of-pie-charts-and-why-you-shouldnt-use-them-df2e8ccb5f76)
+
+### Histogramme ou boxplot ?
+
+Normalement, il n'existe pas un règle pour décider que
+s'il faut utiliser un boxplot ou une histogramme. Mais,
+ce qu'on peut dire est que, il faut pas poser les deux
+ensemble, car ils sont tous pour présenter les infos
+sur la distribution.
+
+### Gaussien ou pas ?
+
+Mathématiquement, il n'existe pas de méthode pour
+tester si un échantillon suit une loi de gaussien ou
+non. En même temps, les hypothèses de type gaussien est
+souvent assurées par TCL. Donc, tracer l'histogramme
+d'un échantillon de taille très limitée ne va pas dire
+qqch sur cette histoire. 
+
+
 
 
 
