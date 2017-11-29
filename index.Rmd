@@ -152,6 +152,53 @@ n'est pas assez éfficace si on a plein de données à traiter. Je vous donne un
 facil à comprendre. Pour allez plus loin, 
 c'est mieux de lire un peu la documentation officielle.
 
+## Un exemple sur l'utilisation de ```apply()``` pour TP4 et TP5
+
+Ici, je vous donne un exemple de l'utilisation de
+```apply()``` en respectant les exos de TP4 et TP5
+
+```{r, eval = FALSE, echo=TRUE}
+rttrans <- function(n,q,theta){
+  z = rt(n,q)
+  x = z + theta 
+        return(x)
+}
+
+rttrans_K <- function(n,q,theta,K){
+  mat = vector()
+  for (i in 1:K){
+    mat = cbind(mat,rttrans(n,q,theta))
+  }
+    return(mat)
+}
+
+estimation_K <- function(mat, method){
+  if (method == 'mean'){
+    return(apply(mat,2,mean))
+  }else if (method == 'median'){
+    return(apply(mat,2,median))
+  }else if (method == 'mean_trim'){
+    return(apply(mat,2,function(mat) mean(mat,trim = 0.2)))
+  }else{
+    print('Wrong input for method.')
+}
+}
+
+risques <- function(theta,hat.theta){
+  return(mean((hat.theta - theta)^2))
+}
+
+######################################################################
+
+n = 20
+q = 5
+theta = 1
+K = 50
+
+estimation_mean_trim <- estimation_K(rttrans_K(n,q,theta,K),'mean_trim')
+risques(theta,estimation_mean_trim)
+```
+
 # Programmation avec **R Notebook** et **Rmarkdown**
 
 [**R Notebook**](http://rmarkdown.rstudio.com/r_notebooks.html) est un éditeur de **.Rmd** dans **Rstudio**.
@@ -289,7 +336,31 @@ tester si un échantillon suit une loi de gaussien ou
 non. En même temps, les hypothèses de type gaussien est
 souvent assurées par TCL. Donc, tracer l'histogramme
 d'un échantillon de taille très limitée ne va pas dire
-qqch sur cette histoire. 
+qqch sur cette histoire. Dans le problème de anorexie, 
+il y a vers 30 données
+dans chaque groupe. Je vous donne un petit exemple
+intéressant.
+
+On commence par simuler un échantillon de taille 1000,
+qui suit une loi normale centrée réduite.
+
+```{r, fig.cap = fig$cap('normal_5000', "Un échantillon d'une loi normale")}
+ech <- rnorm(1000)
+hist(ech)
+```
+
+En suite, on tire un échantillon de taille 30 parmi les
+1000 observations qu'on a simulé.
+
+```{r, fig.height = 10, fig.width = 10, fig.cap = fig$cap('normal_30','Un sous ensemble de taille 30'), message=FALSE, warning=FALSE, results=FALSE}
+par(mfrow = c(3,3))
+replicate(9, hist(sample(ech, size = 30, replace = FALSE)))
+```
+
+Qu'est-ce qu'on observe ? Qu'est-ce qu'on peut conclure ?
+
+
+
 
 
 
