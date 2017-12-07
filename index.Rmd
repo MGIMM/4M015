@@ -93,6 +93,7 @@ poser des questions ou corriger mon français.
 
  * [cette page](https://github.com/mgimm/4M015/) 
  * [Un Rmd template](https://github.com/mgimm/Rmd-template/)  
+ * [Un livre très très bon pour les débutants d'info (surtout nous : les étudiants de maths)](https://info201.github.io/index.html)
 
 # Remarques sur les TP
 
