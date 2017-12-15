@@ -200,6 +200,49 @@ estimation_mean_trim <- estimation_K(rttrans_K(n,q,theta,K),'mean_trim')
 risques(theta,estimation_mean_trim)
 ```
 
+## Sélection de variables par ```leaps```
+
+```{r, echo=TRUE, fig.height=8,fig.cap=fig$cap('bic','Sélection de variables par BIC')}
+X = seq(-10,10,by = 0.1)
+n = length(X)
+sigma = 4
+
+epsilon = rnorm(n,0,sigma)
+
+f = function(x){
+  return(0.02*x^3 + 0.5*x^2 + 5*sin(x))
+}
+
+Y = f(X) + epsilon
+
+######################################################################
+
+df_data <- data.frame(Y,X,X^2, X^3, X^4, X^5, X^6, sin(X), cos(X), exp(X))
+model = lm(Y~., data = df_data)
+
+######################################################################
+
+library(leaps)
+reg <- regsubsets(Y~., data = df_data, nbest = 1)
+plot(reg, scale = "bic")
+```
+
+```{r, echo=TRUE, fig.width = 10, fig.height=4,fig.cap=fig$cap('aic_r2','Sélection de variables par AIC, R2 et R2 ajusté')}
+par(mfrow = c(1,3))
+plot(reg, scale = "Cp")
+plot(reg, scale = "r2")
+plot(reg, scale = "adjr2")
+```
+```{r, echo=TRUE, fig.cap=fig$cap('prediction_bic','Modèle proposé par BIC')}
+model_bic <- lm(Y~cbind(X^2,X^3,sin(X)))
+Y_predict = predict(model_bic,data.frame(X))
+plot(X, f(X), type = 'l', lwd = 2, xlab = 'X', ylab = 'Y',col = 'darkred')
+points(X, Y, type = 'b', lwd = 1, col = 'grey', pch = 1, lty = 2)
+lines(X, Y_predict, lwd = 2)
+legend('topleft', c('fonction à estimer','observations','estimation'), col = c('darkred','grey',1), lwd = c(2,1,2), pch = c(-1,1,-1), lty = c(1,2,1))
+grid()
+
+```
 # Programmation avec **R Notebook** et **Rmarkdown**
 
 [**R Notebook**](http://rmarkdown.rstudio.com/r_notebooks.html) est un éditeur de **.Rmd** dans **Rstudio**.
@@ -359,6 +402,7 @@ replicate(9, hist(sample(ech, size = 30, replace = FALSE)))
 ```
 
 Qu'est-ce qu'on observe ? Qu'est-ce qu'on peut conclure ?
+
 
 
 
