@@ -1,0 +1,205 @@
+---
+title: 4M074 Probabilités Numériques et Statistique Computationnelle
+author: "DU Qiming<p></p> email : duqiming2004@gmail.com"
+date: "printemps 2018"
+abstract: ""
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true 
+    fig_caption: yes
+---
+
+
+```{r cap_ref_functions, include=FALSE}
+############################## configuration ############################## 
+library(knitr)
+## Get the name of this Rmd file
+rmdFn <- knitr::current_input()  # filename of input document
+## Read lines and close connection
+rmdCon <- file(rmdFn, open = 'r')
+rmdLines <- readLines(rmdCon)
+close(rmdCon)
+## Pull out all occurences of at least one back tick, followed 
+## by any number of characters, followed by fig$cap (all on one line)
+figscap_idx <- grep("`+(.*)fig\\$cap", rmdLines)
+rmdLines <- rmdLines[figscap_idx]
+## Get rid of everything up until the start of the caption label
+## This presumes the caption label is the first argument of fig$cap()
+## E.g., fig.cap = fig$cap("my_label", ...)
+rmdLinesSansPre <- sub("(.*)fig\\$cap(.*?)[\"']", "", rmdLines)
+## Identify everything up until the first quote
+match_data <- regexpr("(.*?)[\"']", rmdLinesSansPre)
+## Reduce the length by one, because we're not interested in the final quote
+attr(match_data, "match.length") <- attr(match_data, "match.length") - 1
+## Extract
+fig_labels <- regmatches(rmdLinesSansPre, match_data, invert=FALSE)
+if (length(fig_labels) > 0) {
+    ## Test for duplicates
+    if (anyDuplicated(fig_labels) > 0) stop("Duplicate caption labels detected")
+}else{
+  fig_labels <- c('no_lables')
+}
+
+    ## Create a named list of Figure numbers
+    ref <- as.list(1:length(fig_labels))
+    names(ref) <- fig_labels
+
+## A function for generating captions and cross-references
+fig <- local({
+  i <- 0
+  list(
+    cap=function(refName="", text="", col="darkred") {
+      i <<- i + 1
+      ref[[refName]] <<- i
+      css_ctr <- "text-align:center; display:inline-block; width:100%;"
+      if(text!="") text <- paste0(": ", text)
+      cap_txt <- paste0("<span style=\"color:", col, "; ", css_ctr, "\">Figure ", i, text , "</span>")
+      return(paste0(refName,'&',cap_txt))
+
+    },
+    
+    ref=function(refName, checkRef=TRUE) {
+    if (checkRef && !refName %in% names(ref)) stop(paste0("fig$ref() error: ", refName, " not found"))
+        paste0("<A HREF=\"#fig", refName, "\">Figure ", ref[[refName]], "</A>")})})
+## Replace default hook for processing plots & add figure anchor
+knit_hooks$set(plot = function(x, options,
+                             fig_scale_factor = "80%") {
+  sty <- paste0(" style=\"text-align:center", ";\"")
+  info = strsplit(options$fig.cap,'&')[[1]]
+  refName = info[1]
+  cap_txt = info[2]
+  figanchor <- paste0("<a name=\"fig", refName, "\"></a>")
+  paste('<figure', sty, '>', figanchor, '<img src="',
+    opts_knit$get('base.url'), paste(x, collapse = '.'),
+    '" width = ',fig_scale_factor, '><figcaption>', cap_txt, '</figcaption></figure>','<p></p>',
+    sep = '')
+})
+
+############################## configuration ############################## 
+```
+
+Je donne une liste des problèmes posés par les étudiants pendant le TP (groupe 2 de 4M074 2018).
+Comme il s'agit beaucoup de détails pour faire des codes **jolis**, je trouve que
+c'est plus raisonable d'apprendre les détails petit à petit. Je sélectionne les problèmes qui
+sont (sans doute) intéressants pour qu'on peut avancer ensemble.  
+
+N'hésitez pas de m'envoyez un [email](mailto:duqiming2004@gmail.com) pour 
+poser des questions ou corriger mon français.
+
+
+**misc:**
+
+ * [cette page](https://github.com/mgimm/TP) 
+ * [Un Rmd template](https://github.com/mgimm/Rmd-template/)  
+ * [Un livre très très bon pour les débutants d'info (surtout nous : les étudiants de maths)](https://info201.github.io/index.html)
+
+
+# Environnements de ```R``` 
+
+On travaille principalement sur 
+[Jupyter Notebook](https://jupyter.readthedocs.io/en/latest/index.html) 
+avec 
+[IRkernel](https://irkernel.github.io/). Vous pouvez
+aussi utiliser [Rstudio](https://www.rstudio.com/).
+Voici un guide pour l&#39;installation de Jupyter et
+IRkernel pour tous les OS.
+
+[Installation 
+de Python et
+Jupyter](https://mgimm.github.io/blog/misc/2016/11/17/Installation-python/)
+
+Si vous avez des problèmes sur la configuration, n&#39;hésitez pas de me
+parler. De plus, [sagecloud](https://cloud.sagemath.com/settings) nous permet de
+compiler les notebooks en ligne (graduit). 
+
+## Conseils pour les débudants de `R`
+
+Si vous n&#39;avez jamais suivi un cours de `R`, vous trouvrez dans les
+liens suivants deux documents par madame Tabea Rebafka pour le cours 4M015.
+
+* [Prise en main de
+  R](https://mgimm.github.io/blog/public/pdf/Prise_en_main_de_R.pdf) 
+* [Programmation en
+  R](https://mgimm.github.io/blog/public/pdf/Programmation_en_R.pdf)
+
+# Rappels 
+
+## Matrices des figures
+
+Cas simple :
+
+```{r, fig.height=3, fig.cap=fig$cap("hist1", "Matrice d'histogrammes"), echo = TRUE}
+par(mfrow=c(1,3))
+hist(rnorm(500), breaks=30)
+hist(rexp(500), breaks=30)
+hist(runif(500), breaks=30)
+```
+Cas (un peu) compliqué:
+
+```{r,  fig.cap=fig$cap("hist2", "Matrice d'histogrammes"), echo = TRUE}
+# One figure in row 1 and two figures in row 2
+layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
+hist(rnorm(500), breaks=30)
+hist(rexp(500), breaks=30)
+hist(runif(500), breaks=30)
+```
+
+## `lines` et `curve`
+
+```{r,  fig.cap=fig$cap("lines", "ex. de la fonction _lines_"), echo = TRUE}
+hist(rexp(300), freq=FALSE, breaks = 40)
+x<-seq(0,8,by=.1)
+# ici, x est un vecteur
+lines(x, dexp(x), col = 'darkred')
+```
+
+```{r,  fig.cap=fig$cap("curve", "ex. de la fonction _curve_"), echo = TRUE}
+hist(rexp(300), freq=FALSE, breaks = 40)
+# ici, x est qqch abstrait
+# pour aller plus loin  ?expression
+curve(dexp(x), col = 'darkred', add=TRUE, from=.001)
+```
+
+# Remarques du TP
+
+## TP1
+
+### un exemple de `optimize`
+
+On remarque que cette fonction n'est pas (du tout) magique 
+pour l'optimisation non-convexe. Mais dans le cas convexe,
+il marche très bien.
+ 
+```{r}
+f<-function(x){return(x^2+sin(5*x))}
+opt<-optimize(f, interval=c(-3,3), maximum=F, tol=0.01)
+x_min<-opt$objective
+```
+
+```{r,  fig.cap=fig$cap("optimize", "ex. de la fonction _optimize_"), echo = TRUE}
+curve(f(x), from=-3, to=3)
+points(x_min, f(x_min), col='darkred',pch=19)
+grid()
+```
+### un exemple de `findInterval`
+
+rappel de la définition de l'inverse généralisée d'une fonction réelle $F$,
+ noté $F^{-1}$
+
+$$
+F^{-1}(x) = \inf\{y\in \mathbb{R}: F(y)\geq x\}
+$$
+```{r}
+x_inv<-findInterval(0.6, cumsum(dbinom(0:10,10,0.2)))
+```
+```{r,  fig.cap=fig$cap("etage", "ex. de la fonction _findInterval_"), echo = TRUE}
+plot(0:10,cumsum(dbinom(0:10,10,0.2)))
+points(x_inv,cumsum(dbinom(0:10,10,0.2))[x_inv+1] , col='darkred',pch=19)
+grid()
+```
+
+
+
+
