@@ -200,6 +200,116 @@ points(x_inv,cumsum(dbinom(0:10,10,0.2))[x_inv+1] , col='darkred',pch=19)
 grid()
 ```
 
+## TP2 
+
+### Copule Gaussienne
+
+On commence par un cas particulier ($dim = 2$). La copule est un objet
+pour décrire la dépendance entre les v.a. Pour les v.a. gaussienne, la
+dépendance est totallement définie par la matrice de covariance.
+
+Soit $(X_1,X_2) \sim \mathcal{N}_2 (0, \Gamma_2)$, où la matrice de
+covariance est de forme. 
+
+$$\Gamma_2 = \begin{pmatrix}
+1   &   \rho \\
+\rho  &    1
+\end{pmatrix}$$
+
+Par la construction, on a bien que les lois marginales
+
+$$\mathcal{L}(X_1) =
+\mathcal{L}(X_2) = \mathcal{N}(0,1)$$
+
+Alors, comme la f.d.r. $\Phi\in \mathscr{C}^0$ 
+
+$$(U_1,U_2) = (\Phi(X_1),\Phi(X_2))$$
+
+est bien la copule qu&#39;on cherche à simuler.
+
+On reviens au cas où $dim = n$. Si on simule $(Z_1,\dots,Z_n)$ par
+
+$$\forall i \in \{1,2,\dots,n\}\qquad Z_i = \sqrt{\rho} G_0 + \sqrt{1-\rho} G_i$$
+
+où $G_i$ sont les normals standards indépandantes, c&#39;est facil à vérifier
+que
+
+$$\mathrm{Var}[Z_i] = 1\qquad et \qquad 
+\mathrm{Cov}[Z_i Z_j] = \rho \qquad \forall i\neq j\in\{1,2,\dots,n\}$$
+
+Alors, la matrice de covariance associée est de la forme 
+
+$$ \Gamma_n = \begin{pmatrix}
+  1 & \rho & \cdots & \rho \\
+  \rho & 1 & \cdots & \rho \\
+  \vdots  & \vdots  & \ddots & \vdots  \\
+  \rho & \rho & \cdots & 1 
+ \end{pmatrix}
+$$
+
+Donc, pour simuler $(U_1,U_2,\dots,U_n)$ la copule gaussienne associée, il faut juste prendre
+
+$$U_i = \Phi(Z_i) \qquad \forall i \in \{1,2,\dots,n\}$$
+
+L'intérêt de cette méthode est que si vous voulez simuler les vecteurs
+gaussiens avec $\Gamma$ différents, on peut simuler $(G_i)_{0\leq i \leq N}$ une seule fois
+et ceux qui restent sont des calculs numériques. Il nous permet aussi de faire la
+simulation 'dépendante' parallèlement.
+
+### Urne d&#39;Ehrenfest
+
+On remarque que la loi invariante est bien $\mathcal{B}(d,\frac12)$.
+
+$$\forall k \in [0:d], \qquad \mathbf{P}(X_n = k) =
+\frac{1}{2^d}\binom{d}{k}$$
+
+#### Pourquoi ?
+
+Une manière intuitive de regarder ce problème est de tracer une boule.
+Imaginons que l'on a déjà fait une infinité de fois de transitions. 
+Alors, une certaine boule soit dans A ou dans B est indépendant que les autres
+boules,
+qui suits bien une loi Bernoulli avec proba $\frac12$.
+Donc, le cardinal de l'urne A suits bien une loi
+binomiale. 
+
+Or, c'est facile à vérifier que cette chaine est irréductible et récurrente
+positive (dim. finie). Elle admet une unique loi invariante. Alors il suffit de vérifier
+que 
+
+$$X_0 \sim \mathcal{B}(d,\frac12)\implies X_1 \sim \mathcal{B}(d,\frac12)$$
+
+
+#### Chaine d&#39;Ehrenfest modifiée
+
+On modifie un peu la modélisation précédente en considérant la règle
+suivante: "_on tire un numéro de balle selon la loi uniforme sur
+$\{1,2,\dots,d\}$ et à un tirage $i$ on déplace la balle numéro $i$ d'une
+urne à l'autre __avec probabilité 1/2___".
+
+Intuitivement, on a la chaine modifiée est une chaine apériodique
+irréductible d'états finis, il y a donc une convergence à la vitesse
+géométrique vers la loi invariante $\pi$. On note $\mu_0$ la loi initial et
+$M'$ la trasition modifiée 
+
+$$\forall f \in \mathcal{B}_b([0:d]),\qquad |\mu_0 (M')^n (f)  - \pi (f)|\leq
+C\alpha^n \Vert f\Vert_{\infty}$$ 
+
+avec $C>0$ une const. et $0<\alpha<1$. 
+
+On remarque que la chaine origine est périodique avec période = 2, il n'y a donc pas de
+convergence vers la loi invariante.
+
+On note $M$ le noyau de transition pour la chaine origine et $\pi_0$
+la loi invariante associée. on a 
+
+$$M'(x, dy) = \frac12 M(x,dy) + \frac12\delta_x(dy)$$
+
+Alors, c'est facil à vérifier que
+
+$$\pi_0 M' = \frac12\pi_0 M + \frac12\pi_0 = \pi_0$$
+
+Par l'unicité de la loi invariante, on a $\pi = \pi_0$.
 
 
 
