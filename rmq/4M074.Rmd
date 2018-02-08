@@ -449,3 +449,24 @@ tau_update <- function(tau,lambda_bar, T_bar){
 }
 ```
 
+#### Variable de contrôle
+
+Soit $X$ une v.a. et on s'intéresse à estimer sa moyenne $\mathbf{E}[X]$ par la méthode de monte-carlo.
+Soit $Y$ une v.a. telle que l'on sait la moyenne $\mathbf{E}[Y]$.
+Alors, on a 
+
+$$\mathbf{E}[X] = \mathbf{E}[X-\alpha Y] + \alpha \mathbf{E}[Y]$$
+
+On suppose que on sait simuler suivant la loi $\mathcal{L}(X)$. Alors,
+on s'intéresse au cas où 
+
+$$\mathrm{Var}[X - \alpha Y] \leq \mathrm{Var}[X]$$
+
+C'est facil à vérifier que une condition nécéssaire est que 
+
+$$\mathrm{Cov}[X,Y] \neq 0$$
+
+Et si $\alpha \in (0,\frac{-2\mathrm{Cov}[X,Y]}{\mathrm{Var}[Y]})$ (ou $\alpha \in (\frac{-2\mathrm{Cov}[X,Y]}{\mathrm{Var}[Y]},0)$),
+on a $\mathrm{Var}[X - \alpha Y] \leq \mathrm{Var}[X]$. 
+
+De plus, $\mathrm{Var}[X - \alpha Y]$ atteint son minimum lorsque $\alpha = -\frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}[Y]}$. 
