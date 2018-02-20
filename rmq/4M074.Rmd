@@ -171,6 +171,17 @@ hist(rexp(300), freq=FALSE, breaks = 40)
 curve(dexp(x), col = 'darkred', add=TRUE, from=.001)
 ```
 
+## `list` to `data.frame`
+```{r}
+a <- list()
+b <- list() 
+a$X <- 1
+a$Y <- 2
+b$X <- 3
+b$Y <- 4
+data.frame(do.call(rbind, list(a,b)))
+```
+
 # Remarques du TP
 
 ## TP1
@@ -483,9 +494,9 @@ De plus, $\mathrm{Var}[X - \alpha Y]$ atteint son minimum lorsque $\alpha = -\fr
 
 ### Algorithme de Métropolis-Hastings
 
-Ici, on donne une version un peu plus générale que dans la feuille de TP : On utilise l'opérateurs d'intégrale au lieu de les matrices de transitions. Le but est de comprendre pourquoi M-H nous donne un noyau de transition avec la bonne loi invariante et comment on fait la simulation.
+Ici, on donne une version un peu plus générale que dans la feuille de TP : On utilise opérateur d'intégrale au lieu de matrice de transitions. Le but est de comprendre **pourquoi M-H nous donne un noyau de transition avec la bonne loi invariante** et **comment on fait la simulation**. On remarque que tous les calculs seront identiques si on utilise la représentation matricielle. On va d'abord voir la construction de noyau de transition et vérifier qu'il nous donne la bonne loi invariante par les calculs algébrique. En suite, on donne deux décompositions pour mieux comprendre le dynamique associé et l'idée de la construction. On remarque que ce genre de dynamique nous permet de construire les autres algo pour les sénarios différents.
 
-On suppose qu'on a une mesure $\pi(dx)$ qui est absolument continue par rapport à mesure $dx$, disons une mesure de Lebesgue et un noyau de transition $M(x,dy)$ tel que pour tous les $x$, $M(x,dy) = M(x,y)dy$ est aussi absolument continu.
+On suppose qu'on a une mesure $\pi(dx)$ qui est absolument continue par rapport à mesure $dx$, disons mesure de Lebesgue et un noyau de transition $M(x,dy)$ tel que pour tous les $x$, $M(x,dy) = M(x,y)dy$ est une mesure de proba et est aussi absolument continu par rapport à $dy$.
 On suppose que $M$ est $\pi$-reversible, c-à-d
 
 $$
@@ -499,7 +510,7 @@ $$
 Alors, on définit le noyau Métropolis-Hastings par
 
 $$
-Q(x,dy) := r(x,y)M(x,dy) + \left(1 - \int r(x,y)M(x,dy) \right)\delta_x(dy)
+Q(x,dy) := r(x,y)M(x,dy) + \left(1 - \int r(x,s)M(x,ds) \right)\delta_x(dy)
 $$
 avec 
 $$
@@ -512,18 +523,39 @@ $$
 $$
 pour n'importe quelle fonction de test mesurable bornée $f$.
 
+#### Décomposition 1
+
 Vu que $r(x,y)M(x,dy)$ n'est pas un noyau markovien ($\forall x, \int M(x,dy) = 1$). Donc, on en déduit que 
 
 $$
-Q(x,dy) := \int r(x,y)M(x,dy) \cdot \frac{r(x,y)M(x,dy)}{\int r(x,y)M(x,dy)} + \left(1 - \int r(x,y)M(x,dy) \right)\delta_x(dy)
+Q(x,dy) := \int r(x,s)M(x,ds) \cdot \frac{r(x,y)M(x,dy)}{\int r(x,s)M(x,ds)} + \left(1 - \int r(x,s)M(x,ds) \right)\delta_x(dy)
 $$
 où 
 $$
-\frac{r(x,y)M(x,dy)}{\int r(x,y)M(x,dy)}
+\frac{r(x,y)M(x,dy)}{\int r(x,s)M(x,ds)}
 $$
 est bien un noyau markovien. Alors, pour chaque état $x$, on pourrais regarder la loi de $y$ comme une loi de mélange de
 $\frac{r(x,y)M(x,dy)}{\int r(x,y)M(x,dy)}$ et $\delta_x (dy)$, avec proba
 $$
-\left( \int r(x,y)M(x,dy) , 1- \int r(x,y)M(x,dy)\right)
+\left( \int r(x,s)M(x,ds) , 1- \int r(x,s)M(x,ds)\right)
 $$
 
+#### Décomposition 2  (pour simulation)
+En même temps, on a une autre décomposition pour simplifier la procédure de simulation. On considère deux étapes :
+
+ * simuler $\widetilde{Y} \sim M(x, ds)$
+ * simuler $u \sim \mathscr{U}(0,1)$
+    - si $u < r(x, \widetilde{Y})$, on pose $Y = \widetilde{Y}$
+    - sinon, on pose $Y = x$
+    
+C'est équivaut à dire que on prend 
+
+$$ 
+\widetilde{Q}(x,dy) := \int_s M(x, ds)\left\{
+r(x,s)\delta_s(dy) + (1-r(x,s))\delta_x(dy)
+\right\}
+$$
+C'est aussi très facil à vérifier que
+$$
+Q(x,dy) = \widetilde{Q}(x,dy)
+$$
