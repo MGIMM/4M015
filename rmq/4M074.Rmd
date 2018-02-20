@@ -96,6 +96,14 @@ poser des questions ou corriger mon français.
  * [Un livre très très bon pour les débutants d'info (surtout nous : les étudiants de maths)](https://info201.github.io/index.html)
  * [TP noté I
    (ancien)](https://mgimm.github.io/blog/public/pdf/TP_not%C3%A9_I(Gr.2)_corrig%C3%A9.zip)
+   
+# TP4(corrigé) et TP5(sujet) 20-02-2018
+
+ * [TP4 corrigé](https://mgimm.github.io/TP/doc/TP4_corrige.zip)
+ * [TP5 sujet](https://mgimm.github.io/TP/doc/TP5_sujet.zip)
+
+
+
 
 # Environnements de ```R``` 
 
