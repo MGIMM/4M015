@@ -478,3 +478,52 @@ Et si $\alpha \in (0,\frac{-2\mathrm{Cov}[X,Y]}{\mathrm{Var}[Y]})$ (ou $\alpha \
 on a $\mathrm{Var}[X - \alpha Y] \leq \mathrm{Var}[X]$. 
 
 De plus, $\mathrm{Var}[X - \alpha Y]$ atteint son minimum lorsque $\alpha = -\frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}[Y]}$. 
+
+## TP5
+
+### Algorithme de Métropolis-Hastings
+
+Ici, on donne une version un peu plus générale que dans la feuille de TP : On utilise l'opérateurs d'intégrale au lieu de les matrices de transitions. Le but est de comprendre pourquoi M-H nous donne un noyau de transition avec la bonne loi invariante et comment on fait la simulation.
+
+On suppose qu'on a une mesure $\pi(dx)$ qui est absolument continue par rapport à mesure $dx$, disons une mesure de Lebesgue et un noyau de transition $M(x,dy)$ tel que pour tous les $x$, $M(x,dy) = M(x,y)dy$ est aussi absolument continu.
+On suppose que $M$ est $\pi$-reversible, c-à-d
+
+$$
+\pi(dx)M(x,dy) = \pi(dy)M(y, dx)
+$$
+On remarque que l'égalité est au sens que pour tous les fonction de test $f$ bornée mesurable, on a 
+
+$$
+\int f(x,y) \pi(dx)M(x,dy) = \int f(x,y) \pi(dy)M(y, dx)
+$$
+Alors, on définit le noyau Métropolis-Hastings par
+
+$$
+Q(x,dy) := r(x,y)M(x,dy) + \left(1 - \int r(x,y)M(x,dy) \right)\delta_x(dy)
+$$
+avec 
+$$
+r(x,y) = \frac{\pi(y)M(y,x)}{\pi(x)M(x,y)}
+$$
+
+C'est facil à vérifier que 
+$$
+\int f(y) \pi(dx)Q(x,dy) = \int f(y) \pi(dy)
+$$
+pour n'importe quelle fonction de test mesurable bornée $f$.
+
+Vu que $r(x,y)M(x,dy)$ n'est pas un noyau markovien ($\forall x, \int M(x,dy) = 1$). Donc, on en déduit que 
+
+$$
+Q(x,dy) := \int r(x,y)M(x,dy) \cdot \frac{r(x,y)M(x,dy)}{\int r(x,y)M(x,dy)} + \left(1 - \int r(x,y)M(x,dy) \right)\delta_x(dy)
+$$
+où 
+$$
+\frac{r(x,y)M(x,dy)}{\int r(x,y)M(x,dy)}
+$$
+est bien un noyau markovien. Alors, pour chaque état $x$, on pourrais regarder la loi de $y$ comme une loi de mélange de
+$\frac{r(x,y)M(x,dy)}{\int r(x,y)M(x,dy)}$ et $\delta_x (dy)$, avec proba
+$$
+\left( \int r(x,y)M(x,dy) , 1- \int r(x,y)M(x,dy)\right)
+$$
+
