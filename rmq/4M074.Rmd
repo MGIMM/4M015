@@ -94,8 +94,6 @@ poser des questions ou corriger mon français.
  * [cette page](https://github.com/mgimm/TP) 
  * [Un Rmd template](https://github.com/mgimm/Rmd-template/)  
  * [Un livre très très bon pour les débutants d'info (surtout nous : les étudiants de maths)](https://info201.github.io/index.html)
- * [TP noté I
-   (ancien)](https://mgimm.github.io/blog/public/pdf/TP_not%C3%A9_I(Gr.2)_corrig%C3%A9.zip)
  * [LPSM simulation](http://simulations.lpsm.paris/)
    
 # TP4(corrigé) et TP5(sujet) 20-02-2018
