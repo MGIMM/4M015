@@ -181,6 +181,34 @@ b$Y <- 4
 data.frame(do.call(rbind, list(a,b)))
 ```
 
+## Visualisation 3D par ```plotly``` et ```ggplot2```
+
+```{r, fig.cap=fig$cap('ggplot2_plotly','Visualisation par ggplot2')}
+library(plotly)
+library(ggplot2)
+
+a <- seq(-10,10,0.1)
+b <- a
+
+f <- function(x,y){
+      return(exp(-.01 *((x-1)^2 + (x+1)^2 + y^2)))
+}
+
+# z est une matrice t.q. z(i,j) = f(a_i,b_j) où
+# (a_i,b_j)est le maillage. 
+
+### par plotly
+plot_ly(x = a, y = b, z = sapply(1:length(b), function (i) return(f(a,b[i]))), type = 'surface')
+
+
+### par ggplot2
+A = length(a)
+B = length(b)
+df <- data.frame(a=rep(a,times=B),b=rep(b,each=A),f_z=c(sapply(1:length(b), function (i) return(f(a,b[i])))))
+ggplot(df, aes(a, b, z=f_z)) + geom_contour(bins = 60, aes(colour = ..level..))
+
+```
+
 # Remarques du TP
 
 ## TP1
