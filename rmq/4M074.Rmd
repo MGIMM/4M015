@@ -187,7 +187,7 @@ data.frame(do.call(rbind, list(a,b)))
 library(plotly)
 library(ggplot2)
 
-a <- seq(-10,10,0.1)
+a <- seq(-10,10,0.5)
 b <- a
 
 f <- function(x,y){
@@ -198,7 +198,7 @@ f <- function(x,y){
 # (a_i,b_j)est le maillage. 
 
 ### par plotly
-plot_ly(x = a, y = b, z = sapply(1:length(b), function (i) return(f(a,b[i]))), type = 'surface')
+# plot_ly(x = a, y = b, z = sapply(1:length(b), function (i) return(f(a,b[i]))), type = 'surface')
 
 
 ### par ggplot2
