@@ -184,7 +184,6 @@ data.frame(do.call(rbind, list(a,b)))
 ## Visualisation 3D par ```plotly``` et ```ggplot2```
 
 ```{r, fig.cap=fig$cap('ggplot2_plotly','Visualisation par ggplot2')}
-library(plotly)
 library(ggplot2)
 
 a <- seq(-10,10,0.5)
@@ -198,6 +197,7 @@ f <- function(x,y){
 # (a_i,b_j)est le maillage. 
 
 ### par plotly
+# library(plotly)
 # plot_ly(x = a, y = b, z = sapply(1:length(b), function (i) return(f(a,b[i]))), type = 'surface')
 
 
