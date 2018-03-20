@@ -95,7 +95,8 @@ poser des questions ou corriger mon français.
  * [Un Rmd template](https://github.com/mgimm/Rmd-template/)  
  * [Un livre très très bon pour les débutants d'info (surtout nous : les étudiants de maths)](https://info201.github.io/index.html)
  * [LPSM simulation](http://simulations.lpsm.paris/)
- * [Liste des sujets(pas encore fini)](https://mgimm.github.io/TP/doc/projets.pdf)
+ * [Liste des sujets(pas encore
+   fini)](https://github.com/MGIMM/TP/raw/master/doc/projets.pdf)
    
 
 
