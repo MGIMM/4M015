@@ -98,9 +98,8 @@ poser des questions ou corriger mon français.
  * [Liste des sujets(pas encore
    fini)](https://github.com/MGIMM/TP/raw/master/doc/projets.pdf)
    
-**22 mars 2018**
- * [TP
-   9](https://github.com/MGIMM/TP/raw/master/doc/NB9_sujet.ipynb)
+**27 mars 2018**
+ * [TP noté II 2017](https://github.com/MGIMM/TP/raw/master/doc/TP_note2_Gr2_corrige_2017.zip)
 
 
 # Environnements de ```R``` 
