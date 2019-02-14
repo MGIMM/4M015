@@ -1,7 +1,7 @@
 ---
 title: 4M074 Probabilités Numériques et Statistique Computationnelle
-author: "DU Qiming<p></p> email : duqiming2004@gmail.com"
-date: "printemps 2018"
+author: "DU Qiming<p></p> email : duqiming2004@gmail.com or qiming.du@upmc.fr"
+date: "printemps 2019"
 abstract: ""
 output:
   html_document:
@@ -92,15 +92,17 @@ poser des questions ou corriger mon français.
 **misc:**
 
  * [cette page](https://github.com/mgimm/TP) 
- * [Un Rmd template](https://github.com/mgimm/Rmd-template/)  
+ * [Un Rmd template](https://github.com/mgimm/Rmd-template/)
+   [(preview)](https://mgimm.github.io/Rmd-template/)  
  * [Un livre très très bon pour les débutants d'info (surtout nous : les étudiants de maths)](https://info201.github.io/index.html)
  * [LPSM simulation](http://simulations.lpsm.paris/)
  * [Liste des sujets(pas encore
    fini)](https://github.com/MGIMM/TP/raw/master/doc/projets.pdf)
    
-**27 mars 2018**
- * [TP noté II 2017](https://github.com/MGIMM/TP/raw/master/doc/TP_note2_Gr2_corrige_2017.zip)
+**Annales du TP noté:**
 
+ * [TP noté I 2017](https://github.com/MGIMM/TP/raw/master/doc/TPnote2017.zip)
+ * [TP noté I 2018](https://github.com/MGIMM/TP/raw/master/doc/TPnote2018.zip)
 
 # Environnements de ```R``` 
 
@@ -130,7 +132,7 @@ liens suivants deux documents par madame Tabea Rebafka pour le cours 4M015.
 * [Programmation en
   R](https://mgimm.github.io/blog/public/pdf/Programmation_en_R.pdf)
 
-# Rappels 
+# R de base 
 
 ## Matrices des figures
 
@@ -209,9 +211,8 @@ ggplot(df, aes(a, b, z=f_z)) + geom_contour(bins = 60, aes(colour = ..level..))
 
 # Remarques du TP
 
-## TP1
 
-### un exemple de `optimize`
+## un exemple de `optimize`
 
 On remarque que cette fonction n'est pas (du tout) magique 
 pour l'optimisation non-convexe. Mais dans le cas convexe,
@@ -228,7 +229,7 @@ curve(f(x), from=-3, to=3)
 points(x_min, f(x_min), col='darkred',pch=19)
 grid()
 ```
-### un exemple de `findInterval`
+## un exemple de `findInterval`
 
 rappel de la définition de l'inverse généralisée d'une fonction réelle $F$,
  noté $F^{-1}$
@@ -245,9 +246,8 @@ points(x_inv,cumsum(dbinom(0:10,10,0.2))[x_inv+1] , col='darkred',pch=19)
 grid()
 ```
 
-## TP2 
 
-### Copule Gaussienne
+## Copule Gaussienne
 
 On commence par un cas particulier ($dim = 2$). La copule est un objet
 pour décrire la dépendance entre les v.a. Pour les v.a. gaussienne, la
@@ -261,16 +261,16 @@ $$\Gamma_2 = \begin{pmatrix}
 \rho  &    1
 \end{pmatrix}$$
 
-Par la construction, on a bien que les lois marginales
+Par la construction, on a bien
 
 $$\mathcal{L}(X_1) =
-\mathcal{L}(X_2) = \mathcal{N}(0,1)$$
+\mathcal{L}(X_2) = \mathcal{N}(0,1).$$
 
 Alors, comme la f.d.r. $\Phi\in \mathscr{C}^0$ 
 
 $$(U_1,U_2) = (\Phi(X_1),\Phi(X_2))$$
 
-est bien la copule qu&#39;on cherche à simuler.
+est la copule qu&#39;on cherche à simuler.
 
 On reviens au cas où $dim = n$. Si on simule $(Z_1,\dots,Z_n)$ par
 
@@ -301,14 +301,14 @@ gaussiens avec $\Gamma$ différents, on peut simuler $(G_i)_{0\leq i \leq N}$ un
 et ceux qui restent sont des calculs numériques. Il nous permet aussi de faire la
 simulation 'dépendante' parallèlement.
 
-### Urne d&#39;Ehrenfest
+## Urne d&#39;Ehrenfest
 
 On remarque que la loi invariante est bien $\mathcal{B}(d,\frac12)$.
 
 $$\forall k \in [0:d], \qquad \mathbf{P}(X_n = k) =
 \frac{1}{2^d}\binom{d}{k}$$
 
-#### Pourquoi ?
+### Pourquoi ?
 
 Une manière intuitive de regarder ce problème est de tracer une boule.
 Imaginons que l'on a déjà fait une infinité de fois de transitions. 
@@ -325,7 +325,7 @@ que
 $$X_0 \sim \mathcal{B}(d,\frac12)\implies X_1 \sim \mathcal{B}(d,\frac12)$$
 
 
-#### Chaine d&#39;Ehrenfest modifiée
+### Chaine d&#39;Ehrenfest modifiée
 
 On modifie un peu la modélisation précédente en considérant la règle
 suivante: "_on tire un numéro de balle selon la loi uniforme sur
@@ -357,7 +357,7 @@ $$\pi_0 M' = \frac12\pi_0 M + \frac12\pi_0 = \pi_0$$
 Par l'unicité de la loi invariante, on a $\pi = \pi_0$.
 
 
-### Processus de Poisson inhomogène
+## Processus de Poisson inhomogène
 
 Soit $\lambda:[0,+\infty[ \to ]0, +\infty[$
 une fonction strictement positive, appelée fonction d'intensité.
@@ -377,7 +377,7 @@ $$
 
 avec $\Lambda(t) = \int_0^t \lambda(u) d u$ l'intensité intégrée. Dans la suite on note $\Lambda^{-1}$ la réciproque de $\Lambda$.
 
-#### Simulation par inverse de l&#39;intensité intégrée
+### Simulation par inverse de l&#39;intensité intégrée
 
 Montrer que si $E \sim \mathcal{E}(1)$ et que $t_{n-1}$ est fixé, alors la variable aléatoire $X = \Lambda^{-1}\bigl(E + \Lambda(t_{n-1})\bigr) - t_{n-1}$ vérifie 
 
@@ -454,7 +454,7 @@ grid()
 ``` 
 
 
-#### Simulation par la méthode des sauts fictifs (thinning)
+### Simulation par la méthode des sauts fictifs (thinning)
 
 On suppose maintenant que la fonction d'intensité est bornée 
 
@@ -493,7 +493,7 @@ tau_update <- function(tau,lambda_bar, T_bar){
 }
 ```
 
-#### Variable de contrôle
+## Variable de contrôle
 
 Soit $X$ une v.a. et on s'intéresse à estimer sa moyenne $\mathbf{E}[X]$ par la méthode de monte-carlo.
 Soit $Y$ une v.a. telle que l'on sait la moyenne $\mathbf{E}[Y]$.
@@ -515,9 +515,8 @@ on a $\mathrm{Var}[X - \alpha Y] \leq \mathrm{Var}[X]$.
 
 De plus, $\mathrm{Var}[X - \alpha Y]$ atteint son minimum lorsque $\alpha = -\frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}[Y]}$. 
 
-## TP5
 
-### Algorithme de Métropolis-Hastings
+## Algorithme de Métropolis-Hastings
 
 Ici, on donne une version un peu plus générale que dans la feuille de TP : On utilise opérateur d'intégrale au lieu de matrice de transitions. Le but est de comprendre **pourquoi M-H nous donne un noyau de transition avec la bonne loi invariante** et **comment on fait la simulation**. On remarque que tous les calculs seront identiques si on utilise la représentation matricielle. On va d'abord voir la construction de noyau de transition et vérifier qu'il nous donne la bonne loi invariante par les calculs algébrique. En suite, on donne deux décompositions pour mieux comprendre le dynamique associé et l'idée de la construction. On remarque que ce genre de dynamique nous permet de construire les autres algo pour les sénarios différents.
 
@@ -548,9 +547,9 @@ $$
 $$
 pour n'importe quelle fonction de test mesurable bornée $f$.
 
-#### Décomposition 1
+### Décomposition 1
 
-Vu que $r(x,y)M(x,dy)$ n'est pas un noyau markovien ($\forall x, \int M(x,dy) = 1$). Donc, on en déduit que 
+Vu que $r(x,y)M(x,dy)$ n'est pas un noyau Markovien ($\forall x, \int M(x,dy) = 1$). Donc, on en déduit que 
 
 $$
 Q(x,dy) := \int r(x,s)M(x,ds) \cdot \frac{r(x,y)M(x,dy)}{\int r(x,s)M(x,ds)} + \left(1 - \int r(x,s)M(x,ds) \right)\delta_x(dy)
@@ -559,13 +558,13 @@ où
 $$
 \frac{r(x,y)M(x,dy)}{\int r(x,s)M(x,ds)}
 $$
-est bien un noyau markovien. Alors, pour chaque état $x$, on pourrais regarder la loi de $y$ comme une loi de mélange de
+est bien un noyau Markovien. Alors, pour chaque état $x$, on pourrais regarder la loi de $y$ comme une loi de mélange de
 $\frac{r(x,y)M(x,dy)}{\int r(x,y)M(x,dy)}$ et $\delta_x (dy)$, avec proba
 $$
 \left( \int r(x,s)M(x,ds) , 1- \int r(x,s)M(x,ds)\right)
 $$
 
-#### Décomposition 2  (pour simulation)
+### Décomposition 2  (pour simulation)
 En même temps, on a une autre décomposition pour simplifier la procédure de simulation. On considère deux étapes :
 
  * simuler $\widetilde{Y} \sim M(x, ds)$
