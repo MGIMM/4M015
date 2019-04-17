@@ -80,14 +80,14 @@ knit_hooks$set(plot = function(x, options,
 ############################## configuration ############################## 
 ```
 
-Je donne une liste des problèmes posés par les étudiants pendant le TP (groupe 2 de 4M074 2018).
-Comme il s'agit beaucoup de détails pour faire des codes **jolis**, je trouve que
-c'est plus raisonable d'apprendre les détails petit à petit. Je sélectionne les problèmes qui
-sont (sans doute) intéressants pour qu'on peut avancer ensemble.  
 
-N'hésitez pas de m'envoyez un [email](mailto:duqiming2004@gmail.com) pour 
-poser des questions ou corriger mon français.
+Ce qui précède correspond à une liste de questions posées par les étudiants pendant le TP (groupe B1 de 4M015 2017).
+Comme il y a beaucoup de possibilités pour faire des codes **jolis**, je trouve qu'il
+est plus raisonnable d'apprendre les détails petit à petit. Je sélectionne les problèmes qui
+sont (sans doute) intéressants pour qu'on puisse avancer ensemble.  
 
+N'hésitez pas à m'envoyer un [email](mailto:qiming.du@upmc.fr) pour 
+poser des questions.
 
 **misc:**
 
@@ -96,8 +96,6 @@ poser des questions ou corriger mon français.
    [(preview)](https://mgimm.github.io/Rmd-template/)  
  * [Un livre très très bon pour les débutants d'info (surtout nous : les étudiants de maths)](https://info201.github.io/index.html)
  * [LPSM simulation](http://simulations.lpsm.paris/)
- * [Liste des sujets(pas encore
-   fini)](https://github.com/MGIMM/TP/raw/master/doc/projets.pdf)
    
 **Annales du TP noté:**
 
@@ -118,9 +116,9 @@ IRkernel pour tous les OS.
 de Python et
 Jupyter](https://mgimm.github.io/blog/misc/2016/11/17/Installation-python/)
 
-Si vous avez des problèmes sur la configuration, n&#39;hésitez pas de me
-parler. De plus, [sagecloud](https://cloud.sagemath.com/settings) nous permet de
-compiler les notebooks en ligne (graduit). 
+Si vous avez des problèmes sur la configuration, n&#39;hésitez pas à me
+demander De plus, [sagecloud](https://cloud.sagemath.com/settings) permet de
+compiler les notebooks en ligne (gratuit). 
 
 ## Conseils pour les débudants de `R`
 
@@ -216,7 +214,7 @@ ggplot(df, aes(a, b, z=f_z)) + geom_contour(bins = 60, aes(colour = ..level..))
 
 On remarque que cette fonction n'est pas (du tout) magique 
 pour l'optimisation non-convexe. Mais dans le cas convexe,
-il marche très bien.
+elle marche très bien.
  
 ```{r}
 f<-function(x){return(x^2+sin(5*x))}
@@ -250,18 +248,18 @@ grid()
 ## Copule Gaussienne
 
 On commence par un cas particulier ($dim = 2$). La copule est un objet
-pour décrire la dépendance entre les v.a. Pour les v.a. gaussienne, la
-dépendance est totallement définie par la matrice de covariance.
+pour décrire la dépendance entre les v.a. Pour les v.a. gaussiennes, la
+dépendance est totalement définie par la matrice de covariance.
 
 Soit $(X_1,X_2) \sim \mathcal{N}_2 (0, \Gamma_2)$, où la matrice de
-covariance est de forme. 
+covariance est 
 
 $$\Gamma_2 = \begin{pmatrix}
 1   &   \rho \\
 \rho  &    1
 \end{pmatrix}$$
 
-Par la construction, on a bien
+Par construction, on a bien
 
 $$\mathcal{L}(X_1) =
 \mathcal{L}(X_2) = \mathcal{N}(0,1).$$
@@ -272,11 +270,11 @@ $$(U_1,U_2) = (\Phi(X_1),\Phi(X_2))$$
 
 est la copule qu&#39;on cherche à simuler.
 
-On reviens au cas où $dim = n$. Si on simule $(Z_1,\dots,Z_n)$ par
+On revient au cas où $dim = n$. Si on simule $(Z_1,\dots,Z_n)$ par
 
 $$\forall i \in \{1,2,\dots,n\}\qquad Z_i = \sqrt{\rho} G_0 + \sqrt{1-\rho} G_i$$
 
-où $G_i$ sont les normals standards indépandantes, c&#39;est facil à vérifier
+où $G_i$ sont les normales standards indépendantes, il est facile de vérifier
 que
 
 $$\mathrm{Var}[Z_i] = 1\qquad et \qquad 
@@ -297,8 +295,8 @@ Donc, pour simuler $(U_1,U_2,\dots,U_n)$ la copule gaussienne associée, il faut
 $$U_i = \Phi(Z_i) \qquad \forall i \in \{1,2,\dots,n\}$$
 
 L'intérêt de cette méthode est que si vous voulez simuler les vecteurs
-gaussiens avec $\Gamma$ différents, on peut simuler $(G_i)_{0\leq i \leq N}$ une seule fois
-et ceux qui restent sont des calculs numériques. Il nous permet aussi de faire la
+gaussiens avec $\Gamma$ différents, on peut simuler $(G_i)_{1\leq i \leq N}$ une seule fois.
+Ceci nous permet aussi de faire la
 simulation 'dépendante' parallèlement.
 
 ## Urne d&#39;Ehrenfest
@@ -310,49 +308,49 @@ $$\forall k \in [0:d], \qquad \mathbf{P}(X_n = k) =
 
 ### Pourquoi ?
 
-Une manière intuitive de regarder ce problème est de tracer une boule.
-Imaginons que l'on a déjà fait une infinité de fois de transitions. 
-Alors, une certaine boule soit dans A ou dans B est indépendant que les autres
+Une manière intuitive de regarder ce problème est de suivre une boule précise.
+Imaginons que l'on a déjà fait une infinité de transitions. 
+Alors, le fait que cette boule soit dans A ou dans B est indépendant que d'autres
 boules,
-qui suits bien une loi Bernoulli avec proba $\frac12$.
-Donc, le cardinal de l'urne A suits bien une loi
+et suit une loi de Bernoulli de paramètre $\frac12$.
+Donc, le cardinal de l'urne A suit une loi
 binomiale. 
 
-Or, c'est facile à vérifier que cette chaine est irréductible et récurrente
-positive (dim. finie). Elle admet une unique loi invariante. Alors il suffit de vérifier
+Or, il est facile de vérifier que cette chaîne est irréductible et récurrente
+positive (ensemble d'états finie). Elle admet donc une unique loi invariante. Alors il suffit de vérifier
 que 
 
 $$X_0 \sim \mathcal{B}(d,\frac12)\implies X_1 \sim \mathcal{B}(d,\frac12)$$
 
 
-### Chaine d&#39;Ehrenfest modifiée
+### Chaîne d&#39;Ehrenfest modifiée
 
 On modifie un peu la modélisation précédente en considérant la règle
 suivante: "_on tire un numéro de balle selon la loi uniforme sur
 $\{1,2,\dots,d\}$ et à un tirage $i$ on déplace la balle numéro $i$ d'une
 urne à l'autre __avec probabilité 1/2___".
 
-Intuitivement, on a la chaine modifiée est une chaine apériodique
-irréductible d'états finis, il y a donc une convergence à la vitesse
-géométrique vers la loi invariante $\pi$. On note $\mu_0$ la loi initial et
-$M'$ la trasition modifiée 
+La chaîne modifiée est apériodique et
+irréductible d'états finis, il y a donc une convergence à vitesse
+géométrique vers la loi invariante $\pi$. On note $\mu_0$ la loi initiale et
+$M'$ la transition modifiée 
 
 $$\forall f \in \mathcal{B}_b([0:d]),\qquad |\mu_0 (M')^n (f)  - \pi (f)|\leq
 C\alpha^n \Vert f\Vert_{\infty}$$ 
 
 avec $C>0$ une const. et $0<\alpha<1$. 
 
-On remarque que la chaine origine est périodique avec période = 2, il n'y a donc pas de
+On remarque que la chaîne originale est périodique avec période = 2, il n'y a donc pas de
 convergence vers la loi invariante.
 
-On note $M$ le noyau de transition pour la chaine origine et $\pi_0$
-la loi invariante associée. on a 
+On note $M$ le noyau de transition pour la chaîne originale et $\pi$
+la loi invariante associée (binomiale). On a 
 
 $$M'(x, dy) = \frac12 M(x,dy) + \frac12\delta_x(dy)$$
 
-Alors, c'est facil à vérifier que
+Alors, il est facile de vérifier que
 
-$$\pi_0 M' = \frac12\pi_0 M + \frac12\pi_0 = \pi_0$$
+$$\pi M' = \frac12\pi M + \frac12\pi = \pi$$
 
 Par l'unicité de la loi invariante, on a $\pi = \pi_0$.
 
@@ -362,7 +360,6 @@ Par l'unicité de la loi invariante, on a $\pi = \pi_0$.
 Soit $\lambda:[0,+\infty[ \to ]0, +\infty[$
 une fonction strictement positive, appelée fonction d'intensité.
 On considère maintenant des instants de sauts $(T_n)_{n \geq 1}$
-
 (avec toujours $T_0 = 0$) donnés par la dynamique $T_{n} = T_{n-1} + S_n$ 
 où pour tout $n \geq 1$, $S_n$ est une variable aléatoire sur 
 $]0,+\infty[$ définie conditionnellement à $T_{n-1}$ par 
@@ -386,9 +383,9 @@ $$
     \mathbf{P} \bigl[X > s \bigr] = \exp \bigl(- (\Lambda(t_{n-1} + s) - \Lambda(t_{n-1})) \bigr),
 $$
 
-_preuve_ :
+_Preuve_ :
 
-Puisque $\lambda$ est une fonciton strictement positive, l'application $\Lambda : t \rightarrow \Lambda(t)$ est strictement croissante sur $\mathbb{R}_+$. 
+Puisque $\lambda$ est une fonction strictement positive, l'application $\Lambda : t \rightarrow \Lambda(t)$ est continue et  strictement croissante sur $\mathbb{R}_+$ (donc bijective). 
 
 Alors, on a
 
@@ -401,13 +398,13 @@ $$
 \end{aligned}
 $$ 
 
-C'est-à-dire, on a
+C'est-à-dire, 
 
 $$\mathcal{L}\big(X \; \big\vert \; T_{n-1} = t_{n-1}\big) = \mathcal{L}\big(S_n \; \big\vert \; T_{n-1} = t_{n-1}\big)$$
 
 <span style="float: right">&#9633;</span>
 <br>
-en déduire une méthode de simulation des instants de sauts $(T_n)_{n \geq 1}$ et du processus de comptage associé (appelé processus de Poisson inhomogène de fonction d'intensité $\lambda$).
+En déduire une méthode de simulation des instants de sauts $(T_n)_{n \geq 1}$ et du processus de comptage associé (appelé processus de Poisson inhomogène de fonction d'intensité $\lambda$).
 
 
 
@@ -463,11 +460,10 @@ $$
 $$
 
 Soit $(\bar T_n)_{n \geq 1}$
-
- les instants de sauts d'un processus de poisson 
-$(\bar N_t) (t \geq 0)$ d'intensité $\bar \lambda$.
+les instants de sauts d'un processus de poisson 
+$(\bar N_t) {t \geq 0}$ d'intensité $\bar \lambda$.
 On peut simuler les instants de sauts $(T_n) (n \ge 1)$ en supprimant certains sauts de 
-$(\bar T_n) (n \ge 1)$. Plus précisément, on considère $(U_n)(n \ge 1)$ une suite _i.i.d._ de loi uniforme sur $[0,1]$ et on construit la suite d'indices $(\tau_n)(n \ge 1)$ par la récurrence
+$(\bar T_n) {n \ge 1}$. Plus précisément, on considère $(U_n)_{n \ge 1}$ une suite _i.i.d._ de loi uniforme sur $[0,1]$ et on construit la suite d'indices $(\tau_n)_{n \ge 1}$ par la récurrence
 
 $$
      \forall n \ge 0, \quad \tau_{n+1} = 
@@ -475,7 +471,9 @@ $$
      \qquad \tau_0 = 0
 $$
 
-Alors les sauts de $(\bar N_t)(t \ge 0)$ d'indices $(\tau_n)(n \ge 1)$ sont les sauts d'un processus de Poisson inhomogène de fonction d'intensité $\lambda$. On peut alors construire $(T_n)(n \ge 1)$ en posant $T_n = \bar T_{\tau_n}$.
+Alors les sauts de $(\bar N_t)_{t \ge 0}$ d'indices $(\tau_n)_{n \ge 1}$ sont les
+sauts d'un processus de Poisson inhomogène de fonction d'intensité $\lambda$.
+On peut alors construire $(T_n)_{n \ge 1}$ en posant $T_n = \bar T_{\tau_n}$.
 
 ```{r, eval=FALSE, echo=TRUE}
 tau_update <- function(tau,lambda_bar, T_bar){
@@ -495,18 +493,18 @@ tau_update <- function(tau,lambda_bar, T_bar){
 
 ## Variable de contrôle
 
-Soit $X$ une v.a. et on s'intéresse à estimer sa moyenne $\mathbf{E}[X]$ par la méthode de monte-carlo.
-Soit $Y$ une v.a. telle que l'on sait la moyenne $\mathbf{E}[Y]$.
-Alors, on a 
+Soit $X$ une v.a. et on veut estimer sa moyenne $\mathbf{E}[X]$ par la méthode de Monte-Carlo.
+Soit $Y$ une v.a. telle que l'on connaît la moyenne $\mathbf{E}[Y]$.
+Alors, on a pour, tout $\alpha$, 
 
 $$\mathbf{E}[X] = \mathbf{E}[X-\alpha Y] + \alpha \mathbf{E}[Y]$$
 
-On suppose que on sait simuler suivant la loi $\mathcal{L}(X)$. Alors,
+On suppose que l'on sait simuler suivant la loi $\mathcal{L}(X)$. Alors,
 on s'intéresse au cas où 
 
 $$\mathrm{Var}[X - \alpha Y] \leq \mathrm{Var}[X]$$
 
-C'est facil à vérifier que une condition nécéssaire est que 
+Il est facile de vérifier qu'une condition nécessaire 
 
 $$\mathrm{Cov}[X,Y] \neq 0$$
 
@@ -516,21 +514,17 @@ on a $\mathrm{Var}[X - \alpha Y] \leq \mathrm{Var}[X]$.
 De plus, $\mathrm{Var}[X - \alpha Y]$ atteint son minimum lorsque $\alpha = -\frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}[Y]}$. 
 
 
-## Algorithme de Métropolis-Hastings
+## Algorithme de Metropolis-Hastings
 
-Ici, on donne une version un peu plus générale que dans la feuille de TP : On utilise opérateur d'intégrale au lieu de matrice de transitions. Le but est de comprendre **pourquoi M-H nous donne un noyau de transition avec la bonne loi invariante** et **comment on fait la simulation**. On remarque que tous les calculs seront identiques si on utilise la représentation matricielle. On va d'abord voir la construction de noyau de transition et vérifier qu'il nous donne la bonne loi invariante par les calculs algébrique. En suite, on donne deux décompositions pour mieux comprendre le dynamique associé et l'idée de la construction. On remarque que ce genre de dynamique nous permet de construire les autres algo pour les sénarios différents.
+Ici, on donne une version un peu plus générale que dans la feuille de TP : On utilise l'opérateur intégrale au lieu de la matrice de transitions. 
+Le but est de comprendre **pourquoi M-H nous donne un noyau de transition avec la bonne loi invariante** et **comment on fait la simulation**. 
+On remarque que tous les calculs seront identiques si on utilise la représentation matricielle. 
+On va d'abord voir la construction de noyau de transition et vérifier qu'il nous donne la bonne loi invariante par les calculs algébriques. 
+Ensuite, on donne deux décompositions pour mieux comprendre la dynamique associée et l'idée de la construction. 
+On remarque que ce genre de dynamique nous permet de construire d'autres algorithmes pour des scénarios différents.
 
-On suppose qu'on a une mesure $\pi(dx)$ qui est absolument continue par rapport à mesure $dx$, disons mesure de Lebesgue et un noyau de transition $M(x,dy)$ tel que pour tous les $x$, $M(x,dy) = M(x,y)dy$ est une mesure de proba et est aussi absolument continu par rapport à $dy$.
-On suppose que $M$ est $\pi$-reversible, c-à-d
+On suppose qu'on a une mesure $\pi(dx)$ qui est absolument continue par rapport à la mesure (de Lebesgue) $dx$, et un noyau de transition $M(x,dy)$ tel que pour tous les $x$, $M(x,dy) = M(x,y)dy$ est une mesure de proba et est aussi absolument continue par rapport à $dy$.
 
-$$
-\pi(dx)M(x,dy) = \pi(dy)M(y, dx)
-$$
-On remarque que l'égalité est au sens que pour tous les fonction de test $f$ bornée mesurable, on a 
-
-$$
-\int f(x,y) \pi(dx)M(x,dy) = \int f(x,y) \pi(dy)M(y, dx)
-$$
 Alors, on définit le noyau Métropolis-Hastings par
 
 $$
@@ -538,18 +532,18 @@ Q(x,dy) := r(x,y)M(x,dy) + \left(1 - \int r(x,s)M(x,ds) \right)\delta_x(dy)
 $$
 avec 
 $$
-r(x,y) = \frac{\pi(y)M(y,x)}{\pi(x)M(x,y)}
+r(x,y) = \frac{\pi(y)M(y,x)}{\pi(x)M(x,y)}\wedge 1
 $$
 
-C'est facil à vérifier que 
+Il est facile de vérifier que 
 $$
-\int f(y) \pi(dx)Q(x,dy) = \int f(y) \pi(dy)
+\int \pi(dx)Q(x,dy)f(y) = \int f(y) \pi(dy)
 $$
 pour n'importe quelle fonction de test mesurable bornée $f$.
 
 ### Décomposition 1
 
-Vu que $r(x,y)M(x,dy)$ n'est pas un noyau Markovien ($\forall x, \int M(x,dy) = 1$). Donc, on en déduit que 
+Notons que $r(x,y)M(x,dy)$ n'est pas un noyau Markovien ($\forall x, \int M(x,dy) = 1$). Mais, on en déduit que 
 
 $$
 Q(x,dy) := \int r(x,s)M(x,ds) \cdot \frac{r(x,y)M(x,dy)}{\int r(x,s)M(x,ds)} + \left(1 - \int r(x,s)M(x,ds) \right)\delta_x(dy)
@@ -558,7 +552,7 @@ où
 $$
 \frac{r(x,y)M(x,dy)}{\int r(x,s)M(x,ds)}
 $$
-est bien un noyau Markovien. Alors, pour chaque état $x$, on pourrais regarder la loi de $y$ comme une loi de mélange de
+est bien un noyau markovien. Alors, pour chaque état $x$, on peut voir la loi de $y$ comme une loi de mélange de
 $\frac{r(x,y)M(x,dy)}{\int r(x,y)M(x,dy)}$ et $\delta_x (dy)$, avec proba
 $$
 \left( \int r(x,s)M(x,ds) , 1- \int r(x,s)M(x,ds)\right)
@@ -572,14 +566,14 @@ En même temps, on a une autre décomposition pour simplifier la procédure de s
     - si $u < r(x, \widetilde{Y})$, on pose $Y = \widetilde{Y}$
     - sinon, on pose $Y = x$
     
-C'est équivaut à dire que on prend 
+Ceci équivaut à dire que l'on prend 
 
 $$ 
-\widetilde{Q}(x,dy) := \int_s M(x, ds)\left\{
+\tilde{Q}(x,dy) := \int_s M(x, ds)\left\{
 r(x,s)\delta_s(dy) + (1-r(x,s))\delta_x(dy)
 \right\}
 $$
-C'est aussi très facil à vérifier que
+Il est aussi très facil à vérifier que
 $$
-Q(x,dy) = \widetilde{Q}(x,dy)
+Q(x,dy) = \tilde{Q}(x,dy)
 $$

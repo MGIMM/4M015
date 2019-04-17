@@ -1,7 +1,7 @@
 ---
 title: "Liste de problèmes sur **R** et **Rmd**"
-author: "DU Qiming<p></p> email : duqiming2004@gmail.com"
-date: "autome 2017"
+author: "DU Qiming<p></p> email : qiming.du@upmc.fr"
+date: "automne 2017"
 abstract: ""
 output:
   html_document:
@@ -80,13 +80,13 @@ knit_hooks$set(plot = function(x, options,
 ############################## configuration ############################## 
 ```
 
-Je donne une liste des problèmes posés par les étudiants pendant le TP (groupe B1 de 4M015 2017).
-Comme il s'agit beaucoup de détails pour faire des codes **jolis**, je trouve que
-c'est plus raisonable d'apprendre les détails petit à petit. Je sélectionne les problèmes qui
-sont (sans doute) intéressants pour qu'on peut avancer ensemble.  
+Ce qui précède correspond à une liste de questions posées par les étudiants pendant le TP (groupe B1 de 4M015 2017).
+Comme il y a beaucoup de possibilités pour faire des codes **jolis**, je trouve qu'il
+est plus raisonnable d'apprendre les détails petit à petit. Je sélectionne les problèmes qui
+sont (sans doute) intéressants pour qu'on puisse avancer ensemble.  
 
-N'hésitez pas de m'envoyez un [email](mailto:duqiming2004@gmail.com) pour 
-poser des questions ou corriger mon français.
+N'hésitez pas à m'envoyer un [email](mailto:qiming.du@upmc.fr) pour 
+poser des questions.
 
 
 **source:**
@@ -113,7 +113,7 @@ La différence est que ```require = try + library```. C'est-à-dire, ```require`
 print(require(pacakge_n_existe_pas))
 ```
 
-Alors, on conclut qu'on utilise _toujours_ ```library``` pour importer un package qu'on sait qu'il existe.
+Alors, on conclut qu'on utilise _toujours_ ```library``` pour importer un package existant.
 On n'utilise ```require``` que dans le cas :
 
 ```{r echo=TRUE, eval=FALSE}
@@ -121,7 +121,7 @@ if(!require(package))  install.packages('package')
 ```
 
 
-Si on ne veut utilise qu'une ou deux fonctions ou variables dans un package, 
+Si on ne veut utiliser qu'une ou deux fonctions ou variables d'un package, 
 il faut eviter (si possible) l'utilisation de ```library```. En revanche, on peut directement 
 écrire
 
@@ -130,33 +130,33 @@ package::fonction()
 package::variable
 ```
 
-qui resemble beaucoup à 
+qui ressemble beaucoup à 
 
 ```{r echo=TRUE, eval=FALSE}
 data.frame$nom_de_colone
 ```
 
 
-## Indexing par []
+## Indexation par []
 
 Il y a 3 types de _index_ par [] dans **R** : ```int, logical, char```
 
 * ```int``` : les positions
 * ```logical``` : les conditions
-* ```char``` : les noms (par ex. les noms de colone dans un ```dataframe```)
+* ```char``` : les noms (par ex. les noms de colonne dans un ```dataframe```)
 
-## Manipuler les données par le package ```dplyr```
+## Manipuler les données avec le package ```dplyr```
 
-En fait, dans la vraie vie, c'est très rare qu'on manipule directement les données (par ex. ```data.frame```), qui
-n'est pas assez éfficace si on a plein de données à traiter. Je vous donne une introduction de package
+En fait, dans la vraie vie, il est très rare qu'on manipule directement les données (par ex. ```data.frame```), car 
+ce n'est pas assez efficace si on a plein de données à traiter. Je vous donne une introduction au package
 [dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html), qui est assez
-facil à comprendre. Pour allez plus loin, 
-c'est mieux de lire un peu la documentation officielle.
+facile à comprendre. Pour aller plus loin, 
+il vaut mieux lire un peu la documentation officielle.
 
-## Un exemple sur l'utilisation de ```apply()``` pour TP4 et TP5
+## Un exemple d'utilisation de ```apply()``` pour TP4 et TP5
 
 Ici, je vous donne un exemple de l'utilisation de
-```apply()``` en respectant les exos de TP4 et TP5
+```apply()``` en respectant les exos des TP4 et TP5
 
 ```{r, eval = FALSE, echo=TRUE}
 rttrans <- function(n,q,theta){
@@ -249,16 +249,16 @@ grid()
 
 ## Stucture de **.Rmd**
 
-* metadata(configuration)
+* metadata (configuration)
 * texte
-* bloc de codes
+* chunk de codes
 * texte
-* bloc de codes
+* chunk de codes
 ...
 
-### Une liste d'exemples des blocs
+### Exemples de chunks 
 
-#### calculs, importations des données, les autres manipulations sans sortie
+#### Calculs, importations des données, autres manipulations sans sortie
 
 ```{r, comment = "", echo=FALSE}
 "{r nom1, include=FALSE}
@@ -267,7 +267,7 @@ seq(1, 10)
 cat("```", my_code_string, "```", sep = "")
 ```
 
-#### les plots
+#### Les plots
 
 sans template
 
@@ -278,7 +278,7 @@ plot(rnorm(1000))
 cat("```", my_code_string, "```", sep = "")
 ```
 
-avec tempalte
+avec template
 
 ```{r, comment = "", echo=FALSE}
 "{r nom3, echo=FALSE, fig.cap=fig$cap('label','description')}
@@ -296,7 +296,7 @@ cat("`", my_code_string, "`", sep = "")
 
 pour la référence. J'ai donné un exemple dans le [template](https://github.com/mgimm/Rmd-template).
 
-#### fonction avec **resultat(print)**
+#### Fonction avec **resultat(print)**
 
 ```{r, comment = "", echo=FALSE}
 "{r echo=FALSE}
@@ -309,8 +309,8 @@ cat("```", my_code_string, "```", sep = "")
 ### Pour aller plus loin
 
 Vous pouvez essayer de regarder [cet article](https://yihui.name/knitr/options/#text-results)
-écrit par l'auteur de Rmarkdown. C'est possible de cliquer directement sur le rouage pour changer les 
-paremètre des blocs.
+écrit par l'auteur de Rmarkdown. Il est possible de cliquer directement sur le rouage pour changer les 
+paramètres des chunks. 
   
 # Remarques sur les plots
 
@@ -328,7 +328,7 @@ text(x =  seq_along(names(cars)), y = par("usr")[3] - 10, srt = 55, adj = 1,
      labels = names(cars), xpd = TRUE)
 ```
 
-On remarque que c'est beaucoup plus facil avec le package [ggplot2](http://ggplot2.org/).
+On remarque que c'est beaucoup plus facile avec le package [ggplot2](http://ggplot2.org/).
 
 ## ```legend()``` en dehors d'un plot
 
@@ -362,26 +362,23 @@ voir pas du tout de camenbert pendant ce cours. Il me
 semble que c'est une histoire classique de parler
 camenbert quand on fait la stat. En revanche, dans la
 "vraie" stats, il y a très peu de cas ou un camenbert
-est util. [Pourquoi
+est utile. [Pourquoi
 ?](https://medium.com/@KristinHenry/in-defense-of-pie-charts-and-why-you-shouldnt-use-them-df2e8ccb5f76)
 
 ### Histogramme ou boxplot ?
 
-Normalement, il n'existe pas un règle pour décider que
-s'il faut utiliser un boxplot ou une histogramme. Mais,
-ce qu'on peut dire est que, il faut pas poser les deux
-ensemble, car ils sont tous pour présenter les infos
-sur la distribution.
+Normalement, il n'existe pas de règle pour décider 
+s'il faut utiliser un boxplot ou un histogramme. Mais,
+ce qu'on peut dire est que, il ne faut pas 
+comparer un histogramme et un boxplot.
 
 ### Gaussien ou pas ?
 
-Mathématiquement, il n'existe pas de méthode pour
-tester si un échantillon suit une loi de gaussien ou
-non. En même temps, les hypothèses de type gaussien est
-souvent assurées par TCL. Donc, tracer l'histogramme
-d'un échantillon de taille très limitée ne va pas dire
-qqch sur cette histoire. Dans le problème de anorexie, 
-il y a vers 30 données
+Les hypothèses de type gaussien sont 
+souvent assurées par le TCL. Donc, tracer l'histogramme
+d'un échantillon de taille très limitée n'est pas forcément pertinant.
+Dans le problème de l'anorexie, 
+il y a environ 30 données
 dans chaque groupe. Je vous donne un petit exemple
 intéressant.
 
@@ -393,8 +390,8 @@ ech <- rnorm(1000)
 hist(ech)
 ```
 
-En suite, on tire un échantillon de taille 30 parmi les
-1000 observations qu'on a simulé.
+Ensuite, on tire un échantillon de taille 30 parmi les
+1000 observations qu'on a simulées.
 
 ```{r, fig.height = 10, fig.width = 10, fig.cap = fig$cap('normal_30','Un sous ensemble de taille 30'), message=FALSE, warning=FALSE, results=FALSE}
 par(mfrow = c(3,3))
